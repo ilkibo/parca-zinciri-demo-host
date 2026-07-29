@@ -7,6 +7,14 @@
   Content-Type: application/javascript; charset=utf-8
   Cache-Control: public, max-age=300, must-revalidate
 
+/parca-zinciri-supplier-portal.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+
+/supplier-portal.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+
 /assets/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=31536000, immutable
