@@ -1,12 +1,15 @@
 /* ============================================================
    PARÇA ZİNCİRİ — parca-zinciri-supplier-portal
-   B2B-1 Supplier Operations Portal (self-contained custom element)
+   B2B supplier operations portal — FULL VIEWPORT APP (not modal)
+   Version: b2b-1-fix
    ============================================================ */
 (function () {
   "use strict";
 
   if (typeof customElements === "undefined") return;
   if (customElements.get("parca-zinciri-supplier-portal")) return;
+
+  var PORTAL_VERSION = "b2b-1-fix";
 
   var FONT_HREF =
     "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600;125,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap";
@@ -538,10 +541,27 @@
   /* -------------------- CSS -------------------- */
   var CSS_TEXT = `
 :host {
-  display:block; width:100%; min-height:100vh; height:100%;
-  color:var(--text); background:var(--void);
-  font-family:var(--body); font-size:15px; line-height:1.45;
-  -webkit-font-smoothing:antialiased; box-sizing:border-box;
+  display:block !important;
+  position:relative;
+  width:100% !important;
+  min-height:100vh !important;
+  min-height:100dvh !important;
+  height:100vh !important;
+  height:100dvh !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  box-sizing:border-box;
+  overflow:hidden;
 }
 *,*::before,*::after{box-sizing:border-box}
 :host,.root{
@@ -556,7 +576,27 @@
   --side:248px; --top:64px; --ease:cubic-bezier(.2,.7,.2,1);
   --radius:10px;
 }
-.root{margin:0;min-height:100vh;height:100%;background:var(--void);color:var(--text);font-family:var(--body);overflow:hidden;position:relative}
+/* Full-viewport application shell — escapes Wix widget height/centering */
+.root{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  width:100dvw;
+  height:100vh;
+  height:100dvh;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  max-width:none;
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--body);
+  overflow:hidden;
+  z-index:2147483000;
+  display:flex;
+  flex-direction:column;
+}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
@@ -612,9 +652,10 @@ a{color:inherit;text-decoration:none}
 .chip.danger,.chip.eksik,.chip.red,.chip.sorun{color:#FF9B9B;border-color:rgba(255,92,92,.35)}
 .chip.info,.chip.gonderildi,.chip.yeni{color:#A9D0FF;border-color:rgba(91,164,255,.35)}
 
-/* LOGIN */
+/* LOGIN — full viewport split, never a centered modal */
 .login{
-  min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:var(--void)
+  flex:1; min-height:0; height:100%; width:100%;
+  display:grid; grid-template-columns:1.05fr .95fr; background:var(--void)
 }
 .login-visual{
   position:relative;overflow:hidden;padding:48px clamp(28px,4vw,56px);
@@ -673,13 +714,19 @@ a{color:inherit;text-decoration:none}
 .login-extra{margin-top:18px;text-align:center;font-size:13px;color:var(--mid)}
 .spin-inline{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#111;border-radius:50%;animation:spin .7s linear infinite}
 
-/* APPLY */
-.apply-overlay,.modal-overlay,.drawer-scrim{
-  position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px
+/* APPLY — full-screen flow (not a popup over homepage) */
+.apply-screen{
+  flex:1; min-height:0; height:100%; width:100%; overflow:auto;
+  background:var(--void); padding:28px clamp(16px,4vw,48px);
 }
-.apply-panel,.modal-panel{
-  width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;background:var(--plate);
-  border:1px solid var(--line-2);border-radius:14px;padding:28px;position:relative
+.apply-panel{
+  width:min(880px,100%); margin:0 auto; background:var(--plate);
+  border:1px solid var(--line-2); border-radius:14px; padding:28px; position:relative
+}
+.apply-overlay,.modal-shell-blocker{display:none!important}
+.modal-overlay,.drawer-scrim{
+  position:absolute; inset:0; background:rgba(0,0,0,.62); z-index:80;
+  display:flex; align-items:center; justify-content:center; padding:20px
 }
 .apply-steps{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 24px}
 .apply-steps span{
@@ -701,9 +748,16 @@ a{color:inherit;text-decoration:none}
 .apply-actions{display:flex;justify-content:space-between;gap:12px;margin-top:22px;flex-wrap:wrap}
 .success-box{text-align:center;padding:40px 12px}
 .success-box .mark{width:56px;height:56px;margin:0 auto 16px;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-line);display:grid;place-items:center;color:var(--accent);font-size:24px}
+.modal-panel{
+  width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;background:var(--plate);
+  border:1px solid var(--line-2);border-radius:14px;padding:28px;position:relative
+}
 
 /* APP SHELL */
-.app{display:grid;grid-template-columns:var(--side) 1fr;grid-template-rows:var(--top) 1fr;height:100vh;min-height:100vh}
+.app{
+  flex:1; min-height:0; height:100%; width:100%;
+  display:grid; grid-template-columns:var(--side) 1fr; grid-template-rows:var(--top) 1fr;
+}
 .sidebar{
   grid-row:1 / span 2;background:#141414;border-right:1px solid var(--line);
   display:flex;flex-direction:column;padding:16px 12px;overflow:auto
@@ -800,7 +854,7 @@ table.data tr.clickable{cursor:pointer}
 }
 .tabs button.on{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft)}
 
-.drawer-root{position:fixed;inset:0;z-index:70;pointer-events:none}
+.drawer-root{position:absolute;inset:0;z-index:70;pointer-events:none}
 .drawer-root.open{pointer-events:auto}
 .drawer-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
 .drawer-root.open .drawer-scrim{opacity:1}
@@ -832,7 +886,7 @@ table.data tr.clickable{cursor:pointer}
 .calc-box .tot{font-weight:600;color:var(--accent);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
 
 .toast{
-  position:fixed;right:18px;bottom:18px;z-index:100;min-width:240px;max-width:360px;
+  position:absolute;right:18px;bottom:18px;z-index:100;min-width:240px;max-width:360px;
   background:#1b1b1b;border:1px solid var(--accent-line);border-radius:10px;padding:12px 14px;
   box-shadow:0 12px 40px rgba(0,0,0,.45);transform:translateY(120%);opacity:0;transition:all .25s var(--ease)
 }
@@ -880,13 +934,13 @@ table.data tr.clickable{cursor:pointer}
   .gear{width:110px;height:110px}
   .orbit{width:150px;height:150px}
   .grid-2,.upload-grid,.checks,.map-grid,.quick{grid-template-columns:1fr}
-  .app{grid-template-columns:1fr;grid-template-rows:var(--top) 1fr auto;height:100vh}
+  .app{grid-template-columns:1fr;grid-template-rows:var(--top) 1fr auto;height:100%;min-height:0}
   .sidebar{
-    position:fixed;inset:0 auto 0 0;width:min(280px,86vw);z-index:75;transform:translateX(-105%);
+    position:absolute;inset:0 auto 0 0;width:min(280px,86vw);z-index:75;transform:translateX(-105%);
     transition:transform .25s var(--ease)
   }
   .sidebar.open{transform:none}
-  .side-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:74}
+  .side-backdrop{display:block;position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:74}
   .side-brand .name,.side-brand .sub,.nav button span.lbl{display:inline}
   .nav button{justify-content:flex-start;padding:0 12px}
   .menu-btn{display:inline-grid}
@@ -917,6 +971,11 @@ table.data tr.clickable{cursor:pointer}
       if (this.__mounted) return;
       this.__mounted = true;
       ensureFonts();
+      try {
+        this.setAttribute("data-pz-portal-version", PORTAL_VERSION);
+        this.setAttribute("data-pz-portal-mode", "fullscreen-app");
+      } catch (e) {}
+      this._ensureHostFillStyles();
       this._state = this._initState();
       var shadow = this.attachShadow({ mode: "open" });
       var style = document.createElement("style");
@@ -924,10 +983,30 @@ table.data tr.clickable{cursor:pointer}
       shadow.appendChild(style);
       this._root = document.createElement("div");
       this._root.className = "root";
+      this._root.setAttribute("data-portal-shell", "fullscreen");
       shadow.appendChild(this._root);
       this._toastEl = null;
       this._bind();
       this._render();
+    }
+
+    _ensureHostFillStyles() {
+      if (document.getElementById("pz-supplier-portal-host-fill")) return;
+      var style = document.createElement("style");
+      style.id = "pz-supplier-portal-host-fill";
+      style.textContent =
+        "parca-zinciri-supplier-portal{" +
+        "display:block!important;width:100%!important;min-height:100vh!important;min-height:100dvh!important;" +
+        "height:100vh!important;height:100dvh!important;max-width:none!important;margin:0!important;" +
+        "padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;" +
+        "background:#0F0F0F!important;position:relative!important;overflow:hidden!important;}" +
+        "html.pz-supplier-portal-active,body.pz-supplier-portal-active{margin:0!important;padding:0!important;" +
+        "overflow:hidden!important;height:100%!important;background:#0F0F0F!important;}";
+      document.head.appendChild(style);
+      try {
+        document.documentElement.classList.add("pz-supplier-portal-active");
+        document.body.classList.add("pz-supplier-portal-active");
+      } catch (e2) {}
     }
 
     _initState() {
@@ -1075,8 +1154,9 @@ table.data tr.clickable{cursor:pointer}
         this._render();
         return;
       }
-      if (this._state.applyOpen) {
+      if (this._state.screen === "apply") {
         this._state.applyOpen = false;
+        this._state.screen = "login";
         this._render();
         return;
       }
@@ -1198,6 +1278,7 @@ table.data tr.clickable{cursor:pointer}
         return;
       }
       if (action === "open-apply") {
+        s.screen = "apply";
         s.applyOpen = true;
         s.applyStep = 1;
         this._render();
@@ -1205,6 +1286,7 @@ table.data tr.clickable{cursor:pointer}
       }
       if (action === "close-apply") {
         s.applyOpen = false;
+        s.screen = "login";
         this._render();
         return;
       }
@@ -1223,6 +1305,7 @@ table.data tr.clickable{cursor:pointer}
       if (action === "apply-finish") {
         s.applyOpen = false;
         s.applyStep = 1;
+        s.screen = "login";
         this._toast("Başvuru alındı", "Başvurunuz değerlendirmeye alındı.");
         this._render();
         return;
@@ -2064,8 +2147,10 @@ table.data tr.clickable{cursor:pointer}
     /* -------------------- Render -------------------- */
     _render() {
       var s = this._state;
-      if (s.screen === "login") {
-        this._root.innerHTML = this._renderLogin() + this._renderApply() + '<div class="toast" hidden></div>';
+      if (s.screen === "apply") {
+        this._root.innerHTML = this._renderApply() + '<div class="toast" hidden></div>';
+      } else if (s.screen === "login") {
+        this._root.innerHTML = this._renderLogin() + '<div class="toast" hidden></div>';
       } else {
         this._root.innerHTML =
           this._renderApp() +
@@ -2138,7 +2223,6 @@ table.data tr.clickable{cursor:pointer}
     }
 
     _renderApply() {
-      if (!this._state.applyOpen) return "";
       var step = this._state.applyStep;
       var a = this._state.apply;
       var steps = ["Firma", "Yetkili", "Kapasite", "Belgeler", "Sonuç"];
@@ -2242,10 +2326,10 @@ table.data tr.clickable{cursor:pointer}
           '<p class="muted" style="margin-top:10px">Operasyon ekibimiz belgelerinizi inceledikten sonra kurumsal e-posta adresiniz üzerinden bilgilendirme yapacaktır.</p></div>';
       }
       return (
-        '<div class="apply-overlay" role="dialog" aria-modal="true" aria-labelledby="pz-apply-title">' +
+        '<div class="apply-screen" role="main" aria-labelledby="pz-apply-title">' +
         '<div class="apply-panel">' +
         '<div class="panel-h"><div><div class="eyebrow">Tedarikçi başvurusu</div><h3 id="pz-apply-title" class="h3">Başvuru formu</h3></div>' +
-        '<button type="button" class="btn sm" data-action="close-apply" aria-label="Kapat">Kapat</button></div>' +
+        '<button type="button" class="btn sm" data-action="close-apply" aria-label="Giriş ekranına dön">Girişe dön</button></div>' +
         '<div class="apply-steps">' +
         steps
           .map(function (label, i) {
