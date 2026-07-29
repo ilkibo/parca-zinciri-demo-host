@@ -1032,6 +1032,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '        <article class="supplier-card"><div class="supplier-head"><div class="supplier-avatar" aria-hidden="true">T2</div><div><h4>Tedarikçi #2087</h4><span class="verified">Doğrulanmış</span></div></div><p class="row"><strong>Uzmanlık</strong><span>Sızdırmazlık elemanları</span></p><p class="row"><strong>Bölge</strong><span>İç Anadolu</span></p><span class="fast">Hızlı Yanıt</span></article>' +
       '        <article class="supplier-card"><div class="supplier-head"><div class="supplier-avatar" aria-hidden="true">T3</div><div><h4>Tedarikçi #3156</h4><span class="verified">Doğrulanmış</span></div></div><p class="row"><strong>Uzmanlık</strong><span>Elektrik / tesisat</span></p><p class="row"><strong>Bölge</strong><span>Ege</span></p></article>' +
       '      </div>' +
+      '      <div class="actions" style="margin-top:28px"><button type="button" class="btn" data-supplier-open>Tedarikçi Girişi</button></div>' +
       '    </div>' +
       '  </section>' +
       '  <section class="sec" id="pz-rfq" aria-labelledby="pz-rfq-title">' +
@@ -1109,7 +1110,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '    <div class="ftr-top">' +
       '      <div class="ftr-col"><a href="#pz-top" class="brand" aria-label="Parça Zinciri">' + WORDMARK + '</a></div>' +
       '      <div class="ftr-col"><h5>Platform</h5><a href="#pz-hero">Ana Sayfa</a><a href="#pz-nasil">Nasıl Çalışır</a><a href="#pz-arama">Parça Ara</a></div>' +
-      '      <div class="ftr-col"><h5>Tedarikçiler</h5><a href="#pz-tedarik">Tedarikçi Ağı</a><a href="#pz-b2b">Tedarikçi Girişi</a></div>' +
+      '      <div class="ftr-col"><h5>Tedarikçiler</h5><a href="#pz-tedarik">Tedarikçi Ağı</a><a href="/tedarikci" data-supplier-open>Tedarikçi Girişi</a></div>' +
       '      <div class="ftr-col"><h5>Hakkımızda</h5><a href="#pz-guven">Güven</a><a href="#pz-guven">İletişim</a></div>' +
       '      <div class="ftr-col"><h5>Yasal</h5><a href="#">Gizlilik</a><a href="#">Kullanım Koşulları</a></div>' +
       '    </div>' +
@@ -1970,7 +1971,15 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       }
     }
 
-    function openSupplier() {
+    function resolveSupplierPortalUrl() {
+      try {
+        var raw = (host.getAttribute("supplier-portal-url") || "").trim();
+        if (raw) return raw;
+      } catch (e) {}
+      return "/tedarikci";
+    }
+
+    function openSupplierModal() {
       if (!b2bModal) return;
       lastFocus = document.activeElement;
       resetSupplierView();
@@ -1980,6 +1989,27 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       document.documentElement.style.overflow = "hidden";
       setOpen(false);
       setTimeout(function () { if (b2bPanel) b2bPanel.focus(); }, 10);
+    }
+
+    function openSupplier() {
+      var portalUrl = resolveSupplierPortalUrl();
+      if (portalUrl) {
+        try {
+          window.open(portalUrl, "_top");
+          return;
+        } catch (e) {}
+        try {
+          if (window.top && window.top.location) {
+            window.top.location.assign(portalUrl);
+            return;
+          }
+        } catch (e2) {}
+        try {
+          window.location.assign(portalUrl);
+          return;
+        } catch (e3) {}
+      }
+      openSupplierModal();
     }
 
     function closeSupplier() {
