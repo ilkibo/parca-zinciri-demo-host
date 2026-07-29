@@ -13,8 +13,8 @@
 
   var WORDMARK = "<svg class=\"pz-wordmark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 610.92 84\" role=\"img\" aria-label=\"Parça Zinciri\"><g transform=\"translate(-15,-18)\"><path fill=\"#FF6B00\" fill-rule=\"evenodd\" d=\"M65,18 L77,30 L77,48 L93,48 L105,60 L105,90 L93,102 L55,102 L43,90 L43,72 L27,72 L15,60 L15,30 L27,18ZM69,45 L51,45 L45,51 L45,69 L51,75 L69,75 L75,69 L75,51Z\"/></g>\n  <path fill=\"#FFFFFF\" d=\"M109.69 59.5V24.45H135.97Q139.39 24.45 141.94 25.93Q144.49 27.41 145.92 30.04Q147.35 32.66 147.35 36.08Q147.35 39.5 145.89 42.18Q144.44 44.86 141.84 46.34Q139.23 47.82 135.82 47.82H118.52V59.5ZM118.52 40.83H133.37Q135.92 40.83 137.3 39.6Q138.67 38.38 138.67 36.13Q138.67 34.65 138.06 33.61Q137.45 32.56 136.25 31.97Q135.05 31.39 133.37 31.39H118.52ZM165.2,26.18 L166.94,24.45 L173.37,24.45 L175.1,26.18 L175.1,24.45 L192.5,59.5 L182.91,59.5 L179.85,53.17 L159.9,53.17 L156.84,59.5 L147.81,59.5 L165.2,24.45ZM172.91,38.38 L172.87,38.29 L172.83,38.19 L172.79,38.09 L172.74,37.98 L172.69,37.86 L172.64,37.74 L172.58,37.61 L172.52,37.47 L172.46,37.33 L172.39,37.17 L172.32,37.01 L172.24,36.85 L172.17,36.68 L172.09,36.51 L172.02,36.33 L171.94,36.16 L171.87,35.99 L171.79,35.81 L171.72,35.64 L171.64,35.46 L171.57,35.29 L171.5,35.11 L171.42,34.93 L171.35,34.76 L171.28,34.58 L171.21,34.4 L171.14,34.23 L171.07,34.06 L171,33.9 L170.94,33.73 L170.87,33.57 L170.81,33.42 L170.74,33.26 L170.68,33.11 L170.62,32.96 L170.56,32.82 L170.5,32.68 L170.45,32.55 L170.4,32.42 L170.35,32.31 L170.31,32.21 L170.27,32.11 L170.23,32.03 L170.2,31.95 L170.17,31.89 L170.14,31.83 L170.12,31.78 L170.1,31.74 L169.69,31.74 L169.62,31.92 L169.55,32.09 L169.48,32.27 L169.4,32.45 L169.33,32.64 L169.25,32.83 L169.17,33.02 L169.08,33.22 L169,33.42 L168.91,33.62 L168.82,33.83 L168.72,34.04 L168.63,34.25 L168.54,34.46 L168.45,34.67 L168.36,34.88 L168.27,35.09 L168.18,35.3 L168.1,35.5 L168.01,35.71 L167.93,35.91 L167.84,36.11 L167.76,36.31 L167.68,36.52 L167.6,36.71 L167.52,36.9 L167.44,37.08 L167.37,37.26 L167.3,37.43 L167.23,37.59 L167.16,37.75 L167.09,37.9 L167.02,38.04 L166.96,38.18 L166.9,38.31 L166.84,38.43 L163.11,46.39 L176.63,46.39ZM199.8 59.5V24.45H228.11Q231.89 24.45 234.31 25.98Q236.73 27.51 237.96 30.01Q239.18 32.51 239.18 35.57Q239.18 38.73 237.58 41.46Q235.97 44.19 232.7 45.78L240 59.5H230.1L223.93 47.36H208.62V59.5ZM208.62 40.42H225.51Q227.65 40.42 228.9 39.12Q230.15 37.82 230.15 35.78Q230.15 34.35 229.59 33.38Q229.03 32.41 228.01 31.9Q226.99 31.39 225.51 31.39H208.62ZM268.72 60.11Q261.53 60.11 256.68 58.05Q251.84 55.98 249.41 51.92Q246.99 47.87 246.99 41.95Q246.99 33.28 252.55 28.56Q258.11 23.84 268.67 23.84Q274.64 23.84 279.18 25.57Q283.72 27.31 286.28 30.52Q288.83 33.73 288.83 38.17H280.2Q280.2 35.83 278.75 34.17Q277.3 32.51 274.67 31.64Q272.04 30.78 268.52 30.78Q264.64 30.78 261.84 32.05Q259.03 33.33 257.55 35.67Q256.07 38.02 256.07 41.29V42.56Q256.07 45.83 257.55 48.2Q259.03 50.57 261.84 51.85Q264.64 53.12 268.52 53.12Q272.24 53.12 274.9 52.31Q277.55 51.49 279.01 49.86Q280.46 48.22 280.46 45.88H288.88Q288.88 50.21 286.38 53.43Q283.88 56.64 279.36 58.38Q274.85 60.11 268.72 60.11ZM268.98 69.6Q267.14 69.6 265.18 69.45Q263.21 69.3 261.94 68.99V66.44H268.72Q269.74 66.44 270.36 66.21Q270.97 65.98 270.97 65.16Q270.97 64.45 270.48 64.19Q270 63.94 268.83 63.94H265.51L266.68 57.97H271.02L270.41 61.18Q271.89 61.23 273.14 61.64Q274.39 62.05 275.15 62.92Q275.92 63.79 275.92 65.37Q275.92 66.64 275.28 67.51Q274.64 68.38 273.6 68.81Q272.55 69.24 271.33 69.42Q270.1 69.6 268.98 69.6ZM311.63,26.18 L313.37,24.45 L319.8,24.45 L321.53,26.18 L321.53,24.45 L338.93,59.5 L329.34,59.5 L326.28,53.17 L306.33,53.17 L303.27,59.5 L294.23,59.5 L311.63,24.45ZM319.34,38.38 L319.3,38.29 L319.26,38.19 L319.22,38.09 L319.17,37.98 L319.12,37.86 L319.07,37.74 L319.01,37.61 L318.95,37.47 L318.89,37.33 L318.82,37.17 L318.75,37.01 L318.67,36.85 L318.6,36.68 L318.52,36.51 L318.45,36.33 L318.37,36.16 L318.3,35.99 L318.22,35.81 L318.15,35.64 L318.07,35.46 L318,35.29 L317.93,35.11 L317.85,34.93 L317.78,34.76 L317.71,34.58 L317.64,34.4 L317.57,34.23 L317.5,34.06 L317.43,33.9 L317.37,33.73 L317.3,33.57 L317.24,33.42 L317.17,33.26 L317.11,33.11 L317.05,32.96 L316.99,32.82 L316.93,32.68 L316.88,32.55 L316.83,32.42 L316.78,32.31 L316.74,32.21 L316.7,32.11 L316.66,32.03 L316.63,31.95 L316.6,31.89 L316.57,31.83 L316.55,31.78 L316.53,31.74 L316.12,31.74 L316.05,31.92 L315.98,32.09 L315.91,32.27 L315.83,32.45 L315.76,32.64 L315.68,32.83 L315.59,33.02 L315.51,33.22 L315.42,33.42 L315.34,33.62 L315.25,33.83 L315.15,34.04 L315.06,34.25 L314.97,34.46 L314.88,34.67 L314.79,34.88 L314.7,35.09 L314.61,35.3 L314.52,35.5 L314.44,35.71 L314.35,35.91 L314.27,36.11 L314.19,36.31 L314.11,36.52 L314.03,36.71 L313.95,36.9 L313.87,37.08 L313.8,37.26 L313.73,37.43 L313.65,37.59 L313.59,37.75 L313.52,37.9 L313.45,38.04 L313.39,38.18 L313.33,38.31 L313.27,38.43 L309.54,46.39 L323.06,46.39ZM383.93,31.39 L362.7,31.39 L362.7,24.45 L397.04,24.45 L398.78,26.18 L398.78,27.97 L375.87,52.51 L399.03,52.51 L399.03,59.5 L362.86,59.5 L361.12,57.77 L361.12,55.93ZM408.27 59.5V24.45H417.09V59.5ZM409.03 21.03V14.7H416.33V21.03ZM428.01 59.5V24.45H436.12L454.9 42.05Q455.46 42.51 456.3 43.38Q457.14 44.24 458.06 45.19Q458.98 46.13 459.64 46.85H460.1Q460.05 45.83 459.97 44.3Q459.9 42.77 459.9 41.74V24.45H468.32V59.5H460.36L441.73 41.9Q440.41 40.67 438.98 39.19Q437.55 37.71 436.68 36.8H436.28Q436.33 37.46 436.38 39.04Q436.43 40.62 436.43 42.61V59.5ZM499.44 60.11Q492.24 60.11 487.4 58.05Q482.55 55.98 480.13 51.92Q477.7 47.87 477.7 41.95Q477.7 33.28 483.27 28.56Q488.83 23.84 499.39 23.84Q505.36 23.84 509.9 25.57Q514.44 27.31 516.99 30.52Q519.54 33.73 519.54 38.17H510.92Q510.92 35.83 509.46 34.17Q508.01 32.51 505.38 31.64Q502.76 30.78 499.23 30.78Q495.36 30.78 492.55 32.05Q489.74 33.33 488.27 35.67Q486.79 38.02 486.79 41.29V42.56Q486.79 45.83 488.27 48.2Q489.74 50.57 492.55 51.85Q495.36 53.12 499.23 53.12Q502.96 53.12 505.61 52.31Q508.27 51.49 509.72 49.86Q511.17 48.22 511.17 45.88H519.59Q519.59 50.21 517.09 53.43Q514.59 56.64 510.08 58.38Q505.56 60.11 499.44 60.11ZM528.93 59.5V24.45H537.76V59.5ZM529.69 21.03V14.7H536.99V21.03ZM548.67 59.5V24.45H576.99Q580.77 24.45 583.19 25.98Q585.61 27.51 586.84 30.01Q588.06 32.51 588.06 35.57Q588.06 38.73 586.45 41.46Q584.85 44.19 581.58 45.78L588.88 59.5H578.98L572.81 47.36H557.5V59.5ZM557.5 40.42H574.39Q576.53 40.42 577.78 39.12Q579.03 37.82 579.03 35.78Q579.03 34.35 578.47 33.38Q577.91 32.41 576.89 31.9Q575.87 31.39 574.39 31.39H557.5ZM597.4 59.5V24.45H606.22V59.5ZM598.16 21.03V14.7H605.46V21.03Z\"/></svg>";
   var MARK = "<svg class=\"pz-mark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 90 84\" role=\"img\" aria-label=\"Parça Zinciri\"><g transform=\"translate(-15,-18)\"><path fill=\"#FF6B00\" fill-rule=\"evenodd\" d=\"M65,18 L77,30 L77,48 L93,48 L105,60 L105,90 L93,102 L55,102 L43,90 L43,72 L27,72 L15,60 L15,30 L27,18ZM69,45 L51,45 L45,51 L45,69 L51,75 L69,75 L75,69 L75,51Z\"/></g></svg>";
-  /* WhatsApp: ülke kodu, +/boşluk/tire yok. Boşsa yönlendirme yapılmaz (uydurulmaz). */
-  var WHATSAPP_NUMBER = "";
+  /* WhatsApp: ülke kodu, +/boşluk/tire yok. Tek merkezi sabit. */
+  var WHATSAPP_NUMBER = "905351089690";
   /* Asset root = JS file directory + /assets (tunnel / Pages / local). Hostname hardcode yok. */
   var ASSET_BASE = (function () {
     function fromSrc(src) {
@@ -740,6 +740,16 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
   font-size:16px; text-transform:uppercase; color:var(--text); margin-bottom:8px;
 }
 .rfq-success p { font-size:14px; color:var(--mid); }
+.wa-toast {
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%);
+  z-index:300; max-width:min(420px, calc(100% - 32px));
+  padding:12px 16px; border:1px solid var(--line-2); border-radius:8px;
+  background:#1A1A1A; color:var(--text); font-size:13px; line-height:1.4;
+  box-shadow:0 12px 32px rgba(0,0,0,.45); opacity:0; pointer-events:none;
+  transition:opacity .2s ease;
+}
+.wa-toast.show { opacity:1; pointer-events:auto; }
+.wa-toast.err { border-color:rgba(255,107,0,.55); }
 .trust-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(16px,2vw,24px); }
 .trust-card { background:var(--plate); border:1px solid var(--line); padding:clamp(20px,2.5vw,28px); }
 .trust-ico {
@@ -916,7 +926,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '              <div class="field-grid">' +
       '                <div class="field full"><label for="pz-part-code">Parça Kodu / OEM</label><input id="pz-part-code" name="partCode" type="text" placeholder="Örn. 123-456-78" autocomplete="off"></div>' +
       '                <div class="field"><label for="pz-brand">Marka</label><input id="pz-brand" name="brand" type="text" placeholder="Marka"></div>' +
-      '                <div class="field"><label for="pz-category">Kategori</label><select id="pz-category" name="category"><option value="">Seçiniz</option><option>Mekanik</option><option>Elektrik</option><option>Sızdırmazlık</option></select></div>' +
+      '                <div class="field"><label for="pz-category">Kategori</label><select id="pz-category" name="category"><option value="">Seçiniz</option><option>Motor</option><option>Mekanik</option><option>Elektrik</option><option>Sızdırmazlık</option></select></div>' +
       '              </div>' +
       '            </div>' +
       '            <div class="search-pane" data-pane="vehicle">' +
@@ -1033,10 +1043,12 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '          <div class="field"><label for="rfq-brand">Marka</label><input id="rfq-brand" name="brand" type="text" placeholder="Araç / parça markası"></div>' +
       '          <div class="field"><label for="rfq-model">Model</label><input id="rfq-model" name="model" type="text" placeholder="Model"></div>' +
       '          <div class="field"><label for="rfq-year">Yıl</label><input id="rfq-year" name="year" type="text" placeholder="Örn. 2020" inputmode="numeric"></div>' +
-      '          <div class="field"><label for="rfq-qty">Adet</label><input id="rfq-qty" name="qty" type="number" min="1" value="1" placeholder="1"></div>' +
-      '          <div class="field full"><label for="rfq-part">Parça adı / kodu</label><input id="rfq-part" name="part" type="text" placeholder="Parça adı veya OEM kodu"></div>' +
-      '          <div class="field full"><label for="rfq-urgency">Aciliyet</label><select id="rfq-urgency" name="urgency"><option>Normal</option><option>Acil</option><option>Planlı</option></select></div>' +
-      '          <div class="field full"><label for="rfq-desc">Açıklama</label><textarea id="rfq-desc" name="description" placeholder="Ek bilgi, montaj detayı veya alternatif kodlar..."></textarea></div>' +
+      '          <div class="field"><label for="rfq-qty">Adet</label><input id="rfq-qty" name="qty" type="number" min="1" placeholder="1"></div>' +
+      '          <div class="field"><label for="rfq-category">Parça Kategorisi</label><select id="rfq-category" name="category"><option value="">Seçiniz</option><option>Motor</option><option>Mekanik</option><option>Elektrik</option><option>Sızdırmazlık</option></select></div>' +
+      '          <div class="field full"><label for="rfq-part">OEM / Parça Kodu</label><input id="rfq-part" name="part" type="text" placeholder="Örn. 03L115562"></div>' +
+      '          <div class="field full"><label for="rfq-part-name">Parça Adı</label><input id="rfq-part-name" name="partName" type="text" placeholder="Parça adı"></div>' +
+      '          <div class="field full"><label for="rfq-urgency">Aciliyet</label><select id="rfq-urgency" name="urgency"><option value="">Seçiniz</option><option>Normal</option><option>Acil</option><option>Planlı</option></select></div>' +
+      '          <div class="field full"><label for="rfq-desc">Not</label><textarea id="rfq-desc" name="description" placeholder="Ek bilgi, montaj detayı veya alternatif kodlar..."></textarea></div>' +
       '          <div class="field full"><label>Dosya ekle</label><div class="file-zone" tabindex="0" role="button" aria-label="Dosya yükle"><p>Fotoğraf veya teknik döküman sürükleyin</p><span>PNG, JPG, PDF · Maks. 10 MB</span></div></div>' +
       '        </div>' +
       '        <div class="actions" style="margin-top:20px"><button type="submit" class="btn primary">WhatsApp’tan Sor</button></div>' +
@@ -1143,23 +1155,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '    </div>' +
       '  </div>' +
       '</div>' +
-      '<div class="b2b-modal" id="pz-contact-modal" hidden aria-hidden="true">' +
-      '  <div class="b2b-scrim" data-contact-close></div>' +
-      '  <div class="b2b-panel" id="pz-contact-panel" role="dialog" aria-modal="true" aria-labelledby="pz-contact-title" tabindex="-1">' +
-      '    <div class="b2b-head">' +
-      '      <div class="txt">' +
-      '        <span class="kick">İletişim</span>' +
-      '        <h3 id="pz-contact-title">Talebiniz alındı</h3>' +
-      '        <p>Stok ve fiyat talebinizi iletmek için iletişim kanalımız hazırlanıyor.</p>' +
-      '      </div>' +
-      '      <button type="button" class="b2b-x" data-contact-close aria-label="Kapat">×</button>' +
-      '    </div>' +
-      '    <div class="b2b-body">' +
-      '      <p style="font-size:14px;color:var(--mid);line-height:1.55;margin:0 0 18px">Mesajınız hazır. WhatsApp hattı bağlandığında aynı talebi tek dokunuşla iletebileceksiniz.</p>' +
-      '      <button type="button" class="btn primary" data-contact-close style="width:100%">Tamam</button>' +
-      '    </div>' +
-      '  </div>' +
-      '</div>' +
+      '<div class="wa-toast" id="pz-wa-toast" role="status" aria-live="polite"></div>' +
       '</div>'
     );
   }
@@ -1168,9 +1164,8 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
     return String(raw || "").replace(/\D+/g, "");
   }
 
-  function resolveWhatsAppNumber(host) {
-    var attr = host && host.getAttribute ? host.getAttribute("whatsapp") : "";
-    var n = waDigits(attr || WHATSAPP_NUMBER);
+  function resolveWhatsAppNumber() {
+    var n = waDigits(WHATSAPP_NUMBER);
     return n.length >= 10 ? n : "";
   }
 
@@ -1183,7 +1178,9 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       ["Model", f.model],
       ["Model Yılı", f.year],
       ["Parça Kategorisi", f.category],
+      ["Parça Adı", f.partName],
       ["Adet", f.qty],
+      ["Aciliyet", f.urgency],
       ["Not", f.note || f.description]
     ];
     map.forEach(function (pair) {
@@ -1193,38 +1190,40 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
     return lines.join("\n");
   }
 
-  function showContactReadyPanel(host) {
+  function showWhatsAppError(host) {
     var root = host && host.shadowRoot;
     if (!root) return;
-    var modal = root.querySelector("#pz-contact-modal");
-    var panel = root.querySelector("#pz-contact-panel");
-    if (!modal) return;
-    modal.hidden = false;
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    try {
-      if (panel) panel.focus();
-    } catch (e) {}
-  }
-
-  function closeContactReadyPanel(host) {
-    var root = host && host.shadowRoot;
-    if (!root) return;
-    var modal = root.querySelector("#pz-contact-modal");
-    if (!modal) return;
-    modal.classList.remove("open");
-    modal.hidden = true;
-    modal.setAttribute("aria-hidden", "true");
+    var toast = root.querySelector("#pz-wa-toast");
+    if (!toast) return;
+    toast.textContent = "WhatsApp şu anda açılamadı. Lütfen tekrar deneyin.";
+    toast.classList.add("show", "err");
+    clearTimeout(showWhatsAppError._t);
+    showWhatsAppError._t = setTimeout(function () {
+      toast.classList.remove("show", "err");
+    }, 4200);
   }
 
   function openWhatsApp(host, fields) {
-    var num = resolveWhatsAppNumber(host);
+    var num = resolveWhatsAppNumber();
     if (!num) {
-      showContactReadyPanel(host);
+      showWhatsAppError(host);
       return false;
     }
-    var url = "https://wa.me/" + num + "?text=" + encodeURIComponent(buildWhatsAppMessage(fields));
-    window.open(url, "_blank", "noopener,noreferrer");
+    var message = buildWhatsAppMessage(fields);
+    var url = "https://wa.me/" + num + "?text=" + encodeURIComponent(message);
+    var win = null;
+    try {
+      win = window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      win = null;
+    }
+    if (!win) {
+      showWhatsAppError(host);
+      return false;
+    }
+    try {
+      win.opener = null;
+    } catch (e2) {}
     return true;
   }
 
@@ -1251,8 +1250,11 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       model: String(fd.get("model") || "").trim(),
       year: String(fd.get("year") || "").trim(),
       qty: String(fd.get("qty") || "").trim(),
-      part: String(fd.get("part") || "").trim(),
-      description: String(fd.get("description") || "").trim()
+      partCode: String(fd.get("part") || "").trim(),
+      partName: String(fd.get("partName") || "").trim(),
+      category: String(fd.get("category") || "").trim(),
+      urgency: String(fd.get("urgency") || "").trim(),
+      note: String(fd.get("description") || "").trim()
     };
   }
 
@@ -1902,7 +1904,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
           searchStatus.classList.add("show");
           searchStatus.innerHTML = ok
             ? "<strong>WhatsApp açılıyor.</strong> Stok ve fiyat talebiniz hazırlandı."
-            : "<strong>Stok ve fiyat talebi hazır.</strong> İletişim hattı yapılandırıldığında mesaj doğrudan açılır.";
+            : "<strong>WhatsApp şu anda açılamadı.</strong> Lütfen tekrar deneyin.";
         }
       });
     }
@@ -1929,10 +1931,9 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
         var ok = openWhatsApp(host, fields);
         if (rfqSuccess) {
           rfqSuccess.classList.add("show");
-          if (!ok) {
-            rfqSuccess.querySelector("p").textContent =
-              "Mesajınız hazırlandı. İletişim hattı yapılandırıldığında WhatsApp doğrudan açılır.";
-          }
+          rfqSuccess.querySelector("p").textContent = ok
+            ? "Mesajınız hazırlandı. Açılan pencereden iletişime devam edebilirsiniz."
+            : "WhatsApp şu anda açılamadı. Lütfen tekrar deneyin.";
         }
       });
     }
@@ -2023,9 +2024,6 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
     });
     root.querySelectorAll("[data-b2b-close]").forEach(function (el) {
       el.addEventListener("click", function () { closeSupplier(); });
-    });
-    root.querySelectorAll("[data-contact-close]").forEach(function (el) {
-      el.addEventListener("click", function () { closeContactReadyPanel(host); });
     });
     root.querySelectorAll("[data-supplier-apply]").forEach(function (el) {
       el.addEventListener("click", function () { openSupplier(); });
