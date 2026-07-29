@@ -1,0 +1,42 @@
+{
+  "phase": "F1",
+  "note": "Minimal assets only. Full 108-frame sequence is deferred to F3/F2B.",
+  "assets": [
+    {
+      "id": "wordmark-horizontal",
+      "source": "Parca-Zinciri-v6-Final/parca-zinciri-homepage-prototype-v6.html (inline SVG.lock-h)",
+      "destination": "src/public/assets/brand/wordmark-horizontal.svg",
+      "bytes": 6522,
+      "sha256": "FB614938883EC02DD05744C43DCF54CEAE4154D48740367126FD5356DFDB0E20",
+      "usage": "Header and footer brand (inlined in parca-zinciri-app.js)",
+      "status": "production-candidate"
+    },
+    {
+      "id": "mark-icon",
+      "source": "Parca-Zinciri-v6-Final/parca-zinciri-homepage-prototype-v6.html (inline SVG.lock-i)",
+      "destination": "src/public/assets/brand/mark-icon.svg",
+      "bytes": 364,
+      "sha256": "B8013D1E7A4B6A555C84AC1AFD7F60AA39723D0825AA551CEBAB266068D8CA5A",
+      "usage": "Compact header mark ≤820px",
+      "status": "production-candidate"
+    },
+    {
+      "id": "hero-frame-000",
+      "source": "Parca-Zinciri-v6-Final/assets/hero-sequence/frame-000.webp",
+      "destination": "src/public/assets/hero/frame-000.webp",
+      "bytes": 37540,
+      "sha256": "EEE0F63569F70FFE32D065F3DBE52949283407D06B343149AEC65C72ABF251FA",
+      "usage": "Desktop sequence mount preview only (not full engine)",
+      "status": "temporary-staging-preview"
+    },
+    {
+      "id": "hero-mobile",
+      "source": "Parca-Zinciri-v6-Final/assets/hero-sequence/hero-mobile.webp",
+      "destination": "src/public/assets/hero/hero-mobile.webp",
+      "bytes": 39398,
+      "sha256": "DF63CAC0E89A02C966716851320B767AD2182205D0A054F10336D3F003F1912D",
+      "usage": "Mobile poster mount preview",
+      "status": "production-candidate"
+    }
+  ]
+}

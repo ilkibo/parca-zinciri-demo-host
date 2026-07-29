@@ -1,0 +1,18 @@
+﻿/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Access-Control-Allow-Headers: *
+
+/parca-zinciri-app.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+
+/assets/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/hero-cinematic/*.webm
+  Content-Type: video/webm
+
+/assets/hero-cinematic/*.mp4
+  Content-Type: video/mp4
