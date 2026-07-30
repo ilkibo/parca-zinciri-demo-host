@@ -15,6 +15,9 @@
   var MARK = "<svg class=\"pz-mark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 90 84\" role=\"img\" aria-label=\"Parça Zinciri\"><g transform=\"translate(-15,-18)\"><path fill=\"#FF6B00\" fill-rule=\"evenodd\" d=\"M65,18 L77,30 L77,48 L93,48 L105,60 L105,90 L93,102 L55,102 L43,90 L43,72 L27,72 L15,60 L15,30 L27,18ZM69,45 L51,45 L45,51 L45,69 L51,75 L69,75 L75,69 L75,51Z\"/></g></svg>";
   /* WhatsApp: ülke kodu, +/boşluk/tire yok. Tek merkezi sabit. */
   var WHATSAPP_NUMBER = "905351089690";
+  /* Geçici staging portal — Wix site prefix (my-site-1) zorunlu. Attribute override eder. */
+  var DEFAULT_SUPPLIER_PORTAL_URL =
+    "https://degerkaybi.wixstudio.com/my-site-1/tedarikci";
   /* Asset root = JS file directory + /assets (tunnel / Pages / local). Hostname hardcode yok. */
   var ASSET_BASE = (function () {
     function fromSrc(src) {
@@ -1110,7 +1113,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
       '    <div class="ftr-top">' +
       '      <div class="ftr-col"><a href="#pz-top" class="brand" aria-label="Parça Zinciri">' + WORDMARK + '</a></div>' +
       '      <div class="ftr-col"><h5>Platform</h5><a href="#pz-hero">Ana Sayfa</a><a href="#pz-nasil">Nasıl Çalışır</a><a href="#pz-arama">Parça Ara</a></div>' +
-      '      <div class="ftr-col"><h5>Tedarikçiler</h5><a href="#pz-tedarik">Tedarikçi Ağı</a><a href="/tedarikci" data-supplier-open>Tedarikçi Girişi</a></div>' +
+      '      <div class="ftr-col"><h5>Tedarikçiler</h5><a href="#pz-tedarik">Tedarikçi Ağı</a><a href="' + DEFAULT_SUPPLIER_PORTAL_URL + '" data-supplier-open>Tedarikçi Girişi</a></div>' +
       '      <div class="ftr-col"><h5>Hakkımızda</h5><a href="#pz-guven">Güven</a><a href="#pz-guven">İletişim</a></div>' +
       '      <div class="ftr-col"><h5>Yasal</h5><a href="#">Gizlilik</a><a href="#">Kullanım Koşulları</a></div>' +
       '    </div>' +
@@ -1976,7 +1979,7 @@ h1.hero-h .l2 { display:block; color:var(--accent); margin-top:.08em; }
         var raw = (host.getAttribute("supplier-portal-url") || "").trim();
         if (raw) return raw;
       } catch (e) {}
-      return "/tedarikci";
+      return DEFAULT_SUPPLIER_PORTAL_URL;
     }
 
     function openSupplierModal() {
