@@ -1006,6 +1006,8 @@ table.data tr.clickable{cursor:pointer}
       this._root.setAttribute("data-portal-shell", "fullscreen");
       shadow.appendChild(this._root);
       this._toastEl = null;
+      this._loginWatchToken = 0;
+      this._loginWatchTimer = null;
       this._bind();
       this._applyServerAuthState(
         this.getAttribute("pzstate") || this.getAttribute("data-pz-state")
@@ -1045,6 +1047,11 @@ table.data tr.clickable{cursor:pointer}
       this._state.authUi = authUi;
       this._state.serverContext = ctx;
       this._state.logoutBusy = false;
+      this._loginWatchToken += 1;
+      if (this._loginWatchTimer) {
+        clearTimeout(this._loginWatchTimer);
+        this._loginWatchTimer = null;
+      }
       if (loginError) this._state.loginError = loginError;
       if (authUi === "active_supplier" && ctx && ctx.companyId) {
         this._state.session = {
@@ -1851,6 +1858,17 @@ table.data tr.clickable{cursor:pointer}
       this._render();
       // Real Wix Members login via page bridge — never invent session locally.
       this._emit("pz-supplier-login", { email: email, password: password });
+      var self = this;
+      var watch = ++this._loginWatchToken;
+      clearTimeout(this._loginWatchTimer);
+      this._loginWatchTimer = setTimeout(function () {
+        if (watch !== self._loginWatchToken) return;
+        if (self._state.loginLoading && self._state.screen === "login") {
+          self._state.loginLoading = false;
+          if (!self._state.loginError) self._state.loginError = "network";
+          self._render();
+        }
+      }, 45000);
     }
 
     _publicLoginErrorMessage(code) {
