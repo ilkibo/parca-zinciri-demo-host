@@ -967,6 +967,16 @@ table.data tr.clickable{cursor:pointer}
 
   /* -------------------- Component -------------------- */
   class ParcaZinciriSupplierPortal extends HTMLElement {
+    static get observedAttributes() {
+      return ["pzstate", "data-pz-state"];
+    }
+
+    attributeChangedCallback(name, _old, value) {
+      if (name !== "pzstate" && name !== "data-pz-state") return;
+      if (!this.__mounted || !this._state) return;
+      this._applyServerAuthState(value);
+    }
+
     connectedCallback() {
       if (this.__mounted) return;
       this.__mounted = true;
@@ -976,6 +986,7 @@ table.data tr.clickable{cursor:pointer}
         this.setAttribute("data-pz-portal-mode", "fullscreen-app");
       } catch (e) {}
       this._ensureHostFillStyles();
+      this._purgeLegacyAuthStorage();
       this._state = this._initState();
       var shadow = this.attachShadow({ mode: "open" });
       var style = document.createElement("style");
@@ -987,7 +998,56 @@ table.data tr.clickable{cursor:pointer}
       shadow.appendChild(this._root);
       this._toastEl = null;
       this._bind();
+      this._applyServerAuthState(
+        this.getAttribute("pzstate") || this.getAttribute("data-pz-state")
+      );
       this._render();
+      this._emit("pz-supplier-refresh");
+    }
+
+    _purgeLegacyAuthStorage() {
+      try {
+        localStorage.removeItem(LS.session);
+      } catch (e) {}
+    }
+
+    _emit(name, detail) {
+      try {
+        this.dispatchEvent(
+          new CustomEvent(name, { bubbles: true, composed: true, detail: detail || {} })
+        );
+      } catch (e) {}
+    }
+
+    _applyServerAuthState(raw) {
+      var authUi = "unauthenticated";
+      var ctx = null;
+      try {
+        var parsed = typeof raw === "string" && raw ? JSON.parse(raw) : raw;
+        if (parsed && parsed.auth) {
+          authUi = String(parsed.auth.ui || "unauthenticated");
+          ctx = parsed.auth.context || null;
+        }
+      } catch (e) {
+        authUi = "unauthenticated";
+      }
+      this._state.authUi = authUi;
+      this._state.serverContext = ctx;
+      if (authUi === "active_supplier" && ctx && ctx.companyId) {
+        this._state.session = {
+          loggedIn: true,
+          companyId: ctx.companyId,
+          companyName: ctx.companyName || "",
+          role: ctx.role || "",
+          source: "wix-members"
+        };
+        if (ctx.companyName) this._state.profile.companyName = ctx.companyName;
+        this._state.screen = "app";
+      } else {
+        this._state.session = null;
+        this._state.screen = "login";
+      }
+      if (this._root) this._render();
     }
 
     _ensureHostFillStyles() {
@@ -1010,7 +1070,7 @@ table.data tr.clickable{cursor:pointer}
     }
 
     _initState() {
-      var session = loadLS(LS.session, null);
+      this._purgeLegacyAuthStorage();
       var requests = loadLS(LS.requests, null) || seedRequests();
       var quotes = loadLS(LS.quotes, null) || seedQuotes();
       var inventory = loadLS(LS.inventory, null) || seedInventory();
@@ -1021,8 +1081,10 @@ table.data tr.clickable{cursor:pointer}
       var documents = loadLS(LS.documents, null) || seedDocuments();
       var settings = loadLS(LS.settings, null) || seedSettings();
       return {
-        session: session,
-        screen: session && session.loggedIn ? "app" : "login",
+        session: null,
+        authUi: "unauthenticated",
+        serverContext: null,
+        screen: "login",
         route: "overview",
         sideOpen: false,
         notifOpen: false,
@@ -1084,7 +1146,7 @@ table.data tr.clickable{cursor:pointer}
 
     _persist() {
       var s = this._state;
-      if (s.session) saveLS(LS.session, s.session);
+      this._purgeLegacyAuthStorage();
       saveLS(LS.quotes, s.quotes);
       saveLS(LS.inventory, s.inventory);
       saveLS(LS.notifications, s.notifications);
@@ -1277,6 +1339,10 @@ table.data tr.clickable{cursor:pointer}
         this._render();
         return;
       }
+      if (action === "wix-login") {
+        this._handleLogin(null);
+        return;
+      }
       if (action === "open-apply") {
         s.screen = "apply";
         s.applyOpen = true;
@@ -1316,10 +1382,11 @@ table.data tr.clickable{cursor:pointer}
       }
       if (action === "logout") {
         s.session = null;
+        s.serverContext = null;
+        s.authUi = "unauthenticated";
         s.screen = "login";
-        try {
-          localStorage.removeItem(LS.session);
-        } catch (err) {}
+        this._purgeLegacyAuthStorage();
+        this._emit("pz-supplier-logout");
         this._render();
         return;
       }
@@ -1703,40 +1770,19 @@ table.data tr.clickable{cursor:pointer}
     }
 
     _handleLogin(form) {
-      var emailField = form.querySelector('[name="email"]').closest(".field");
-      var passField = form.querySelector('[name="password"]').closest(".field");
-      emailField.classList.remove("err");
-      passField.classList.remove("err");
-      var email = String(form.email.value || "").trim();
-      var pass = String(form.password.value || "");
-      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      var passOk = pass.length >= 6;
-      if (!emailOk) emailField.classList.add("err");
-      if (!passOk) passField.classList.add("err");
-      if (!emailOk || !passOk) return;
-      var remember = !!(form.remember && form.remember.checked);
-      var self = this;
+      /* Fake email/password login removed. Auth is Wix Members via page bridge. */
+      if (form && form.preventDefault) form.preventDefault();
+      this._purgeLegacyAuthStorage();
       this._state.loginLoading = true;
       this._render();
+      this._emit("pz-supplier-login");
+      var self = this;
       setTimeout(function () {
         self._state.loginLoading = false;
-        self._state.session = {
-          loggedIn: true,
-          email: email,
-          companyName: self._state.profile.companyName,
-          remember: remember
-        };
-        self._state.screen = "app";
-        self._state.route = "overview";
-        if (remember) saveLS(LS.session, self._state.session);
-        else {
-          try {
-            localStorage.removeItem(LS.session);
-          } catch (err) {}
+        if (!self._state.session || !self._state.session.loggedIn) {
+          self._render();
         }
-        self._toast("Hoş geldiniz", self._state.profile.companyName);
-        self._render();
-      }, 700);
+      }, 400);
     }
 
     _validateApplyStep() {
@@ -2168,8 +2214,26 @@ table.data tr.clickable{cursor:pointer}
     }
 
     _renderLogin() {
-      var show = this._state.showPass;
       var loading = this._state.loginLoading;
+      var authUi = this._state.authUi || "unauthenticated";
+      var statusMsg = "";
+      if (authUi === "forbidden") {
+        statusMsg =
+          "<p class=\"lead\" style=\"color:#ffb4a0\">Bu üye için aktif tedarikçi şirket üyeliği bulunamadı.</p>";
+      } else if (authUi === "session_unavailable") {
+        statusMsg =
+          "<p class=\"lead\">Oturum doğrulanamadı. Yayınlanmış staging üzerinde tekrar deneyin.</p>";
+      } else if (authUi === "login_cancelled") {
+        statusMsg = "<p class=\"lead\">Giriş iptal edildi veya tamamlanmadı.</p>";
+      } else if (authUi === "membership_pending") {
+        statusMsg = "<p class=\"lead\">Üyelik onayı bekleniyor.</p>";
+      } else if (authUi === "email_verification_required") {
+        statusMsg = "<p class=\"lead\">E-posta doğrulaması gerekli.</p>";
+      } else if (authUi === "session_initializing") {
+        statusMsg = "<p class=\"lead\">Oturum doğrulanıyor…</p>";
+      } else if (authUi === "disabled") {
+        statusMsg = "<p class=\"lead\">Tedarikçi portalı henüz etkin değil.</p>";
+      }
       return (
         '<div class="login" role="main">' +
         '<section class="login-visual" aria-label="Tedarikçi operasyon merkezi">' +
@@ -2194,29 +2258,15 @@ table.data tr.clickable{cursor:pointer}
         '<section class="login-panel">' +
         '<div class="login-card">' +
         "<h2>TEDARİKÇİ PORTALINA GİRİŞ</h2>" +
-        '<p class="lead">Parça taleplerini görüntüleyin, tekliflerinizi yönetin ve stoklarınızı tek panelden takip edin.</p>' +
-        '<form id="pz-login-form" novalidate>' +
-        '<div class="field"><label for="pz-email">Kurumsal e-posta</label>' +
-        '<input id="pz-email" name="email" type="email" autocomplete="username" required data-autofocus />' +
-        '<div class="ferr">Geçerli bir kurumsal e-posta girin.</div></div>' +
-        '<div class="field"><label for="pz-pass">Şifre</label>' +
-        '<div class="pass-wrap"><input id="pz-pass" name="password" type="' +
-        (show ? "text" : "password") +
-        '" autocomplete="current-password" required minlength="6" />' +
-        '<button type="button" class="pass-toggle" data-action="toggle-pass" aria-label="Şifreyi göster veya gizle">' +
-        (show ? "Gizle" : "Göster") +
-        "</button></div>" +
-        '<div class="ferr">Şifre en az 6 karakter olmalı.</div></div>' +
-        '<div class="row-between"><label><input class="check" type="checkbox" name="remember" /> Beni hatırla</label>' +
-        '<button type="button" class="btn link" data-action="forgot">Şifremi unuttum</button></div>' +
-        '<button type="submit" class="btn primary block" ' +
-        (loading ? "disabled" : "") +
+        '<p class="lead">Giriş yalnızca Wix Members ile yapılır. Parça Zinciri şifre işlemez; localStorage oturumu kabul edilmez.</p>' +
+        statusMsg +
+        '<button type="button" class="btn primary block" data-action="wix-login" ' +
+        (loading || authUi === "disabled" ? "disabled" : "") +
         ">" +
         (loading
-          ? '<span class="spin-inline" aria-hidden="true"></span> Giriş yapılıyor...'
-          : "GİRİŞ YAP") +
+          ? '<span class="spin-inline" aria-hidden="true"></span> Giriş açılıyor...'
+          : "WIX İLE GİRİŞ YAP") +
         "</button>" +
-        "</form>" +
         '<p class="login-extra"><button type="button" class="btn link" data-action="open-apply">Tedarikçi başvurusu yap</button></p>' +
         "</div></section></div>"
       );
