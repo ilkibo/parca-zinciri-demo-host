@@ -1039,6 +1039,7 @@ table.data tr.clickable{cursor:pointer}
           companyId: ctx.companyId,
           companyName: ctx.companyName || "",
           role: ctx.role || "",
+          email: ctx.loginEmail || "",
           source: "wix-members"
         };
         if (ctx.companyName) this._state.profile.companyName = ctx.companyName;
@@ -1089,6 +1090,7 @@ table.data tr.clickable{cursor:pointer}
         sideOpen: false,
         notifOpen: false,
         userMenuOpen: false,
+        logoutBusy: false,
         applyOpen: false,
         applyStep: 1,
         apply: loadLS(LS.applyDraft, {
@@ -1381,12 +1383,26 @@ table.data tr.clickable{cursor:pointer}
         return;
       }
       if (action === "logout") {
+        if (s.logoutBusy) return;
+        s.logoutBusy = true;
         s.session = null;
         s.serverContext = null;
         s.authUi = "unauthenticated";
         s.screen = "login";
+        s.userMenuOpen = false;
         this._purgeLegacyAuthStorage();
         this._emit("pz-supplier-logout");
+        this._render();
+        return;
+      }
+      if (action === "toggle-user-menu") {
+        s.userMenuOpen = !s.userMenuOpen;
+        this._render();
+        return;
+      }
+      if (action === "change-password") {
+        s.userMenuOpen = false;
+        this._emit("pz-supplier-change-password");
         this._render();
         return;
       }
@@ -2492,13 +2508,27 @@ table.data tr.clickable{cursor:pointer}
         "🔔" +
         (unread ? '<span class="badge">' + unread + "</span>" : "") +
         "</button>" +
-        '<div class="user-chip" title="' +
-        esc(s.session && s.session.email) +
-        '"><div class="av">ME</div><div class="meta"><strong>' +
+        '<div class="user-chip-wrap" style="position:relative">' +
+        '<button type="button" class="user-chip" data-action="toggle-user-menu" aria-haspopup="true">' +
+        '<div class="av">ME</div><div class="meta"><strong>' +
         esc((s.session && s.session.companyName) || s.profile.companyName) +
         "</strong><span>" +
         esc((s.session && s.session.email) || "") +
-        "</span></div></div></div>" +
+        "</span></div></button>" +
+        (s.userMenuOpen
+          ? '<div class="panel" style="position:absolute;right:0;top:110%;min-width:220px;z-index:30;padding:12px;background:#1a1a1a;border:1px solid #333">' +
+            "<strong>" +
+            esc((s.session && s.session.companyName) || "Tedarikçi") +
+            "</strong>" +
+            "<div style=\"opacity:.7;margin:4px 0 10px;font-size:12px\">" +
+            esc((s.session && s.session.email) || "") +
+            "</div>" +
+            '<button type="button" class="btn" data-action="change-password" style="width:100%;margin-bottom:8px">Şifremi Değiştir</button>' +
+            '<button type="button" class="btn" data-action="logout" style="width:100%"' +
+            (s.logoutBusy ? " disabled" : "") +
+            ">Çıkış Yap</button></div>"
+          : "") +
+        "</div></div>" +
         (s.notifOpen ? this._renderNotifPanel() : "") +
         "</header>" +
         '<main class="main"><div class="main-inner" data-main>' +
