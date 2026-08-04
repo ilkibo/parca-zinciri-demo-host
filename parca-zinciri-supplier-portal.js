@@ -1,7 +1,7 @@
 /* ============================================================
    PARÇA ZİNCİRİ — parca-zinciri-supplier-portal
    B2B supplier operations portal — FULL VIEWPORT APP (not modal)
-   Version: b2b-1-email-login
+   Version: b2b-1-email-login-2
    ============================================================ */
 (function () {
   "use strict";
@@ -9,7 +9,7 @@
   if (typeof customElements === "undefined") return;
   if (customElements.get("parca-zinciri-supplier-portal")) return;
 
-  var PORTAL_VERSION = "b2b-1-email-login";
+  var PORTAL_VERSION = "b2b-1-email-login-2";
 
   var FONT_HREF =
     "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600;125,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap";
@@ -1022,6 +1022,75 @@ table.data tr.clickable{cursor:pointer}
       } catch (e) {}
     }
 
+    _buildPreviewSafeHomePath() {
+      try {
+        if (typeof location === "undefined" || !location.href) return "/";
+        var u = new URL(location.href);
+        var parts = String(u.pathname || "/")
+          .split("/")
+          .filter(Boolean);
+        var known = {
+          kataloglar: true,
+          tedarikci: true,
+          yonetim: true,
+          "katalog-siparis-basarili": true,
+          urunlerimiz: true
+        };
+        var base = "";
+        if (parts.length && !known[parts[0]]) base = "/" + parts[0];
+        var out = new URL(base || "/", u.origin);
+        ["siteRevision", "branchId"].forEach(function (k) {
+          var v = u.searchParams.get(k);
+          if (v) out.searchParams.set(k, v);
+        });
+        return out.pathname + out.search;
+      } catch (e) {
+        return "/";
+      }
+    }
+
+    _navigateHomeFallback() {
+      var home = this._buildPreviewSafeHomePath() || "/";
+      try {
+        if (typeof history !== "undefined" && history.replaceState) {
+          history.replaceState(null, "", home);
+        }
+      } catch (e0) {}
+      var abs = home;
+      try {
+        abs = new URL(home, location.origin).href;
+      } catch (e1) {}
+      try {
+        var target = typeof window !== "undefined" && window.top ? window.top : window;
+        if (target && target.location) target.location.assign(abs);
+        else if (typeof location !== "undefined") location.assign(abs);
+      } catch (e2) {
+        try {
+          if (typeof location !== "undefined") location.href = abs;
+        } catch (e3) {}
+      }
+    }
+
+    _scheduleLogoutHomeFallback() {
+      var self = this;
+      if (self._logoutHomeTimer) {
+        clearTimeout(self._logoutHomeTimer);
+        self._logoutHomeTimer = null;
+      }
+      // Page bridge should navigate first; CE fallback if still on portal route.
+      self._logoutHomeTimer = setTimeout(function () {
+        self._logoutHomeTimer = null;
+        try {
+          var path = String((location && location.pathname) || "");
+          if (/\/tedarikci\/?$/i.test(path) || /\/tedarikci\?/i.test(path + (location.search || ""))) {
+            self._navigateHomeFallback();
+          }
+        } catch (e) {
+          self._navigateHomeFallback();
+        }
+      }, 3200);
+    }
+
     _emit(name, detail) {
       try {
         this.dispatchEvent(
@@ -1437,6 +1506,7 @@ table.data tr.clickable{cursor:pointer}
         s.userMenuOpen = false;
         this._purgeLegacyAuthStorage();
         this._emit("pz-supplier-logout");
+        this._scheduleLogoutHomeFallback();
         this._render();
         return;
       }
