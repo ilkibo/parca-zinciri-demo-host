@@ -1,7 +1,7 @@
 /* ============================================================
    PARÇA ZİNCİRİ — parca-zinciri-supplier-portal
    B2B supplier operations portal — FULL VIEWPORT APP (not modal)
-   Version: b2b-1-fix
+   Version: b2b-1-email-login
    ============================================================ */
 (function () {
   "use strict";
@@ -9,7 +9,7 @@
   if (typeof customElements === "undefined") return;
   if (customElements.get("parca-zinciri-supplier-portal")) return;
 
-  var PORTAL_VERSION = "b2b-1-fix";
+  var PORTAL_VERSION = "b2b-1-email-login";
 
   var FONT_HREF =
     "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600;125,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap";
@@ -705,14 +705,23 @@ a{color:inherit;text-decoration:none}
 .login-panel{
   display:flex;align-items:center;justify-content:center;padding:40px 28px;background:var(--plate)
 }
-.login-card{width:100%;max-width:420px}
+.login-card{width:100%;max-width:480px}
 .login-card h2{font-family:var(--display);font-variation-settings:"wdth" 125,"wght" 700;font-size:26px;margin:0 0 10px}
-.login-card .lead{color:var(--mid);margin-bottom:28px;font-size:14px}
-.row-between{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 18px;font-size:13px;color:var(--mid)}
+.login-card .lead{color:var(--mid);margin-bottom:22px;font-size:14px}
+.login-error{
+  margin:0 0 16px;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,92,92,.35);
+  background:rgba(255,92,92,.08);color:#FFB4A0;font-size:13px;line-height:1.45
+}
+.login-form{display:flex;flex-direction:column;gap:14px}
+.login-form .field label{display:block;margin-bottom:6px}
+.login-form .field input{width:100%}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 4px;font-size:13px;color:var(--mid)}
 .row-between label{display:flex;align-items:center;gap:8px;cursor:pointer}
 .check{width:16px;height:16px;accent-color:var(--accent)}
 .login-extra{margin-top:18px;text-align:center;font-size:13px;color:var(--mid)}
-.spin-inline{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#111;border-radius:50%;animation:spin .7s linear infinite}
+.login-extra .sep{margin:0 6px;color:var(--dim)}
+.spin-inline{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#111;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@media (max-width:640px){.login-card{max-width:none}}
 
 /* APPLY — full-screen flow (not a popup over homepage) */
 .apply-screen{
@@ -1022,17 +1031,21 @@ table.data tr.clickable{cursor:pointer}
     _applyServerAuthState(raw) {
       var authUi = "unauthenticated";
       var ctx = null;
+      var loginError = null;
       try {
         var parsed = typeof raw === "string" && raw ? JSON.parse(raw) : raw;
         if (parsed && parsed.auth) {
           authUi = String(parsed.auth.ui || "unauthenticated");
           ctx = parsed.auth.context || null;
+          if (parsed.auth.loginError) loginError = String(parsed.auth.loginError);
         }
       } catch (e) {
         authUi = "unauthenticated";
       }
       this._state.authUi = authUi;
       this._state.serverContext = ctx;
+      this._state.logoutBusy = false;
+      if (loginError) this._state.loginError = loginError;
       if (authUi === "active_supplier" && ctx && ctx.companyId) {
         this._state.session = {
           loggedIn: true,
@@ -1044,9 +1057,16 @@ table.data tr.clickable{cursor:pointer}
         };
         if (ctx.companyName) this._state.profile.companyName = ctx.companyName;
         this._state.screen = "app";
+        this._state.loginLoading = false;
+        this._state.loginError = null;
       } else {
         this._state.session = null;
         this._state.screen = "login";
+        this._state.loginLoading = false;
+        if (authUi === "forbidden") {
+          // Keep forbidden UI; no technical membership wording.
+          this._state.loginError = null;
+        }
       }
       if (this._root) this._render();
     }
@@ -1115,6 +1135,8 @@ table.data tr.clickable{cursor:pointer}
         }),
         loginLoading: false,
         showPass: false,
+        loginEmail: "",
+        loginError: null,
         requests: requests,
         quotes: quotes,
         inventory: inventory,
@@ -1341,8 +1363,24 @@ table.data tr.clickable{cursor:pointer}
         this._render();
         return;
       }
-      if (action === "wix-login") {
-        this._handleLogin(null);
+      if (action === "forgot") {
+        this._emit("pz-supplier-forgot-password", {
+          email: String(s.loginEmail || "").trim().toLowerCase()
+        });
+        return;
+      }
+      if (action === "switch-account") {
+        if (s.logoutBusy) return;
+        s.logoutBusy = true;
+        s.session = null;
+        s.serverContext = null;
+        s.authUi = "unauthenticated";
+        s.loginError = null;
+        s.screen = "login";
+        s.userMenuOpen = false;
+        this._purgeLegacyAuthStorage();
+        this._emit("pz-supplier-switch-account");
+        this._render();
         return;
       }
       if (action === "open-apply") {
@@ -1643,10 +1681,6 @@ table.data tr.clickable{cursor:pointer}
         }
         return;
       }
-      if (action === "forgot") {
-        this._toast("Şifre sıfırlama", "Kurumsal e-posta adresinize yönlendirme bağlantısı hazırlanacak.");
-        return;
-      }
     }
 
     _onSubmit(e) {
@@ -1786,19 +1820,50 @@ table.data tr.clickable{cursor:pointer}
     }
 
     _handleLogin(form) {
-      /* Fake email/password login removed. Auth is Wix Members via page bridge. */
+      if (this._state.loginLoading) return;
       if (form && form.preventDefault) form.preventDefault();
       this._purgeLegacyAuthStorage();
+
+      var emailRaw = "";
+      var password = "";
+      if (form && form.elements) {
+        var emailEl = form.elements.namedItem("email") || form.querySelector('[name="email"]');
+        var passEl = form.elements.namedItem("password") || form.querySelector('[name="password"]');
+        emailRaw = emailEl && emailEl.value != null ? String(emailEl.value) : "";
+        password = passEl && passEl.value != null ? String(passEl.value) : "";
+      }
+      var email = emailRaw.trim().toLowerCase();
+      this._state.loginEmail = email;
+      this._state.loginError = null;
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        this._state.loginError = "invalid_credentials";
+        this._render();
+        return;
+      }
+      if (!password || password.length < 1) {
+        this._state.loginError = "invalid_credentials";
+        this._render();
+        return;
+      }
+
       this._state.loginLoading = true;
       this._render();
-      this._emit("pz-supplier-login");
-      var self = this;
-      setTimeout(function () {
-        self._state.loginLoading = false;
-        if (!self._state.session || !self._state.session.loggedIn) {
-          self._render();
-        }
-      }, 400);
+      // Real Wix Members login via page bridge — never invent session locally.
+      this._emit("pz-supplier-login", { email: email, password: password });
+    }
+
+    _publicLoginErrorMessage(code) {
+      if (code === "rate_limited") {
+        return "Çok fazla başarısız giriş denemesi yapıldı. Lütfen bir süre sonra tekrar deneyin.";
+      }
+      if (code === "network") {
+        return "Giriş şu anda tamamlanamıyor. Lütfen tekrar deneyin.";
+      }
+      if (code === "forbidden_supplier") {
+        return "Bu hesap tedarikçi portalına erişim yetkisine sahip değil.";
+      }
+      return "E-posta adresi veya şifre hatalı.";
     }
 
     _validateApplyStep() {
@@ -2232,24 +2297,71 @@ table.data tr.clickable{cursor:pointer}
     _renderLogin() {
       var loading = this._state.loginLoading;
       var authUi = this._state.authUi || "unauthenticated";
-      var statusMsg = "";
-      if (authUi === "forbidden") {
-        statusMsg =
-          "<p class=\"lead\" style=\"color:#ffb4a0\">Bu üye için aktif tedarikçi şirket üyeliği bulunamadı.</p>";
-      } else if (authUi === "session_unavailable") {
-        statusMsg =
-          "<p class=\"lead\">Oturum doğrulanamadı. Yayınlanmış staging üzerinde tekrar deneyin.</p>";
-      } else if (authUi === "login_cancelled") {
-        statusMsg = "<p class=\"lead\">Giriş iptal edildi veya tamamlanmadı.</p>";
-      } else if (authUi === "membership_pending") {
-        statusMsg = "<p class=\"lead\">Üyelik onayı bekleniyor.</p>";
-      } else if (authUi === "email_verification_required") {
-        statusMsg = "<p class=\"lead\">E-posta doğrulaması gerekli.</p>";
+      var showPass = !!this._state.showPass;
+      var emailVal = this._state.loginEmail || "";
+      var disabled = loading || authUi === "disabled";
+      var statusBlock = "";
+      var formBlock = "";
+
+      if (authUi === "disabled") {
+        statusBlock =
+          '<p class="lead">Tedarikçi portalı henüz etkin değil.</p>';
+      } else if (authUi === "forbidden") {
+        statusBlock =
+          '<div class="login-error" role="alert">' +
+          esc(this._publicLoginErrorMessage("forbidden_supplier")) +
+          "</div>" +
+          '<button type="button" class="btn primary block" data-action="switch-account" ' +
+          (this._state.logoutBusy ? "disabled" : "") +
+          ">Farklı Hesapla Giriş Yap</button>";
       } else if (authUi === "session_initializing") {
-        statusMsg = "<p class=\"lead\">Oturum doğrulanıyor…</p>";
-      } else if (authUi === "disabled") {
-        statusMsg = "<p class=\"lead\">Tedarikçi portalı henüz etkin değil.</p>";
+        statusBlock = '<p class="lead">Oturum doğrulanıyor…</p>';
+      } else {
+        var errCode = this._state.loginError;
+        var errHtml = errCode
+          ? '<div class="login-error" role="alert" data-login-error>' +
+            esc(this._publicLoginErrorMessage(errCode)) +
+            "</div>"
+          : "";
+        formBlock =
+          errHtml +
+          '<form id="pz-login-form" class="login-form" novalidate>' +
+          '<div class="field"><label for="pz-login-email">E-posta</label>' +
+          '<input id="pz-login-email" name="email" type="email" autocomplete="username" required ' +
+          'data-autofocus value="' +
+          esc(emailVal) +
+          '" ' +
+          (disabled ? "disabled" : "") +
+          "/></div>" +
+          '<div class="field"><label for="pz-login-password">Şifre</label>' +
+          '<div class="pass-wrap">' +
+          '<input id="pz-login-password" name="password" type="' +
+          (showPass ? "text" : "password") +
+          '" autocomplete="current-password" required ' +
+          (disabled ? "disabled" : "") +
+          "/>" +
+          '<button type="button" class="pass-toggle" data-action="toggle-pass" aria-label="' +
+          (showPass ? "Şifreyi gizle" : "Şifreyi göster") +
+          '" ' +
+          (disabled ? "disabled" : "") +
+          ">" +
+          (showPass ? "Gizle" : "Göster") +
+          "</button></div></div>" +
+          '<button type="submit" class="btn primary block" ' +
+          (disabled ? "disabled" : "") +
+          ">" +
+          (loading
+            ? '<span class="spin-inline" aria-hidden="true"></span>GİRİŞ YAPILIYOR...'
+            : "GİRİŞ YAP") +
+          "</button>" +
+          '<div class="row-between"><button type="button" class="btn link" data-action="forgot" ' +
+          (disabled ? "disabled" : "") +
+          ">Şifremi Unuttum</button></div>" +
+          "</form>" +
+          '<p class="login-extra">Tedarikçi hesabınız yok mu?' +
+          '<button type="button" class="btn link" data-action="open-apply">Tedarikçi Başvurusu Yap</button></p>';
       }
+
       return (
         '<div class="login" role="main">' +
         '<section class="login-visual" aria-label="Tedarikçi operasyon merkezi">' +
@@ -2274,16 +2386,9 @@ table.data tr.clickable{cursor:pointer}
         '<section class="login-panel">' +
         '<div class="login-card">' +
         "<h2>TEDARİKÇİ PORTALINA GİRİŞ</h2>" +
-        '<p class="lead">Giriş yalnızca Wix Members ile yapılır. Parça Zinciri şifre işlemez; localStorage oturumu kabul edilmez.</p>' +
-        statusMsg +
-        '<button type="button" class="btn primary block" data-action="wix-login" ' +
-        (loading || authUi === "disabled" ? "disabled" : "") +
-        ">" +
-        (loading
-          ? '<span class="spin-inline" aria-hidden="true"></span> Giriş açılıyor...'
-          : "WIX İLE GİRİŞ YAP") +
-        "</button>" +
-        '<p class="login-extra"><button type="button" class="btn link" data-action="open-apply">Tedarikçi başvurusu yap</button></p>' +
+        '<p class="lead">Hesabınıza erişmek için e-posta adresinizi ve şifrenizi girin.</p>' +
+        statusBlock +
+        formBlock +
         "</div></section></div>"
       );
     }
