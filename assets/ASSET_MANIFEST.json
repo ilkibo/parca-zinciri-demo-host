@@ -45,9 +45,9 @@
       "cdn": "https://ilkibo.github.io/parca-zinciri-demo-host/assets/hero-exploded/",
       "files": [
         {
-          "name": "poster-excavator.webp",
-          "bytes": 143080,
-          "sha256": "d2ca6a83bfce1f6a3792626b493e86f999f5a7fecfac4c20b6f80e4924551d3d"
+          "name": "poster-excavator-master.webp",
+          "bytes": 125634,
+          "sha256": "80fabbf9e0f7d62a56c38d2afeeac423ba796d9e27e3071a24c6f702f9da06bf"
         },
         {
           "name": "poster-match.webp",
