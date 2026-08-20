@@ -45,39 +45,44 @@
       "cdn": "https://ilkibo.github.io/parca-zinciri-demo-host/assets/hero-exploded/",
       "files": [
         {
-          "name": "excavator-loop-mobile.mp4",
-          "bytes": 108254,
-          "sha256": "7f83655da5bf477dbfbb96352f978da39fe14661a1ca6486539dc40ba430a41e"
+          "name": "poster-excavator.webp",
+          "bytes": 143080,
+          "sha256": "d2ca6a83bfce1f6a3792626b493e86f999f5a7fecfac4c20b6f80e4924551d3d"
         },
         {
-          "name": "excavator-loop-mobile.webm",
-          "bytes": 196030,
-          "sha256": "ff919b58e9d6f0c4e290162f3dc88215a17a4aaba5b9eed6cd215a8e6bda4ec1"
-        },
-        {
-          "name": "excavator-loop.mp4",
-          "bytes": 379196,
-          "sha256": "08b73ca700136e1dd51b76911c400344f2ba304fa8b148b880f8dfe2b3fbf5b5"
+          "name": "poster-match.webp",
+          "bytes": 56270,
+          "sha256": "c480172e691e58c5fe5c4e0e0bf02db1d0368763ab3d6640b6b398efc77cef5f"
         },
         {
           "name": "excavator-loop.webm",
-          "bytes": 420646,
-          "sha256": "3f859e2e26c94c8c5ade8d32ab94ddb4aa43ba4be3ec60bc6c28e29dabc42718"
+          "bytes": 792152,
+          "sha256": "e03623904f1b41b120d9eb7423180b8f4dd65c351a6bb54fbcb6cd35c0effc23"
         },
         {
-          "name": "poster-locked.webp",
-          "bytes": 58216,
-          "sha256": "6e434c9a7599bc150c384525161f49dcfac5494aa3428a6666ed86a3d49c0fb6"
+          "name": "excavator-loop.mp4",
+          "bytes": 710653,
+          "sha256": "1e53d99b3f91c2e42c10201a58fde6d44e7be006fd4df3317d92384f3f4849ad"
         },
         {
-          "name": "poster-mobile.webp",
-          "bytes": 20186,
-          "sha256": "5156394f236c1f69458f5370b891d3e9a07cfe196afe5f38ea80aebebdd78e17"
+          "name": "excavator-loop-mobile.webm",
+          "bytes": 412239,
+          "sha256": "a34df024cd440403fb8d0a1e4df609d5a83e0e796208e47a63eac4da88dd6d1d"
         },
         {
-          "name": "poster.webp",
-          "bytes": 71118,
-          "sha256": "a9f2dfde35108bc5d82bf51d2fd93e727d6c2bcbb3c9d8953f94b9a6f8555a7a"
+          "name": "excavator-loop-mobile.mp4",
+          "bytes": 361724,
+          "sha256": "29c9463fc165d8a79b6cacefcf3df81b1ed0eeb00b82a6b1f4a99180289a53c1"
+        },
+        {
+          "name": "match-loop.webm",
+          "bytes": 465270,
+          "sha256": "60f1edac3d6f8329c01b99b703bbc6ae020bbfe7aad4e805153920c740d3c421"
+        },
+        {
+          "name": "match-loop.mp4",
+          "bytes": 402136,
+          "sha256": "2e42cc4c4ad0264884587d6d8840ca10dc87983fb7732873fe6656544fce5312"
         }
       ],
       "status": "production"
